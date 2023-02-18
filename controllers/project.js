@@ -38,11 +38,20 @@ var controller = {
         if(projectId == null) return res.status(404).send({message:'No existe el projecto.'});
 
         Project.findById(projectId, (err, project) => {
-            if(err) return res.status(500).send({message:'Error al ver los datos.'});
+            if(err) return res.status(500).send({message:'Error al ver el proyecto.'});
 
-            if(!project) return res.status(404).send({message: 'No existe el projecto.'});
+            if(!project) return res.status(404).send({message: 'No existe el proyecto.'});
 
             return res.status(200).send({project});
+        });
+    },
+    getProjects: function(req, res){
+        Project.find({}).sort('-year').exec((err, projects) => {
+            if(err) return res.status(500).send({message:'Error al ver los proyectos.'});
+
+            if(!projects) return res.status(404).send({message: 'No hay proyectos para mostrar.'});
+
+            return res.status(200).send({projects});
         });
     }
 };
